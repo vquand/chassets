@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isometric 3D GLB Assets"
+  short_description: "Generate low-poly isometric GLB assets"
+  default_prompt: "Use $isometric-3d-glb-assets to generate a low-poly isometric unit GLB for chassets."
