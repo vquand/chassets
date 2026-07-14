@@ -17,6 +17,7 @@
 - Use stable mesh and group names. Tests and composition code may look up names.
 - Keep material names meaningful. Do not rename tint-target materials casually.
 - Preserve known animation clip names when replacing an asset.
+- When auditing a family, normalize every root to its uppercase entity code; do not rely on a consumer's child-index fallback to mask inconsistent exports.
 
 ## Mounted Unit Contract
 
@@ -25,6 +26,7 @@
 - Check rider facing. Some mount assets face opposite older humanoid assets and need app-side yaw handling.
 - Check clipping from the actual Guide camera, not only from the scene graph.
 - Horse intentionally renders smaller in mounted composition; do not apply that assumption to all mounts.
+- For mirrored animated parts, sample both pivots and verify symmetry and loop continuity at clip boundaries.
 
 ## Verification Checklist
 
@@ -35,3 +37,4 @@
 - Capture mounted Guide screenshots for any mount or rider contract change.
 - Run app tests and typecheck when code changes.
 - Commit chassets binary updates separately from consuming app code updates.
+- Check that each runtime locomotion selector covers the clips emitted by the corresponding assets in both map and Guide paths.
