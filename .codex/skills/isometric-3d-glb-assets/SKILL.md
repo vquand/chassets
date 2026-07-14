@@ -14,6 +14,7 @@ Use this skill to create compact, readable `.glb` assets for the `chassets` repo
 1. Inspect the target asset path and neighboring assets first.
    - Use `models/units/*.glb` as the active unit asset pattern.
    - Inspect scene graph, material names, bounds, animation clips, and required marker nodes before editing.
+   - Audit the whole sibling set when reviewing an existing family: compare each filename-derived entity code with its root name, bounds, clip names, and movement mode. A fallback loader can hide a bad root name until composition code looks up a node directly.
    - If the asset is consumed by Under Siege, verify the matching registry in `apps/web/src/threeUnitModels.ts`.
 
 2. Generate with a temporary or repo-local Three.js script.
@@ -63,7 +64,9 @@ Use layered verification:
 
 - **Structural**: inspect GLB root, bounds, nodes, materials, animation clips, and marker nodes.
 - **Animation**: load each required clip with an `AnimationMixer` or equivalent, sample its motion, and verify grounded clips do not sink below `y = 0` or imply unintended flight.
+- **Paired parts**: for wings, legs, or other mirrored pairs, sample both sides through the full clip. Check that left/right motion remains mirrored, the first and last poses loop, and the pivots—not just the visible meshes—are the animated targets.
 - **Runtime**: verify the consuming app can load the asset and reports `data-unit-model-status="loaded"`; verify the intended clip is selected in both the map renderer and Guide preview.
+- **Selection matrix**: compare every emitted locomotion clip against the runtime selection table. A valid `fly` clip is still a shipped bug if the map path silently leaves that asset in its bind pose while the Guide uses a different fallback.
 - **Visual**: capture and inspect Guide screenshots at the actual preview scale. Confirm the silhouette, signature features, wing separation, color blocks, ground contact, facing, and clipping read without relying on a close-up render.
 - **Git**: stage files by name and keep generated binary commits separate from app-code commits when both repos are involved.
 
